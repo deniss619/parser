@@ -9,12 +9,15 @@ table_name = "ex6"
 cursor.execute("SELECT 1 FROM pg_database WHERE datname='jokes'")
 if cursor.fetchone() is None:
     cursor.execute(f"""CREATE DATABASE jokes""")
+    connection.commit()
 
     connection = psycopg2.connect("postgresql://postgres:1234@localhost:5432/jokes")
     cursor = connection.cursor()
     query = f'''CREATE TABLE {table_name}(
            id SERIAL PRIMARY KEY,
             category TEXT,
-           joke TEXT
+           joke TEXT,
+            time time without time zone
         )'''
     cursor.execute(query)
+    connection.commit()
